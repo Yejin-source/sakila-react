@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom';
 
 export default function Address() {
     const [addressList, setAddressList] = useState([]); 
@@ -23,6 +24,7 @@ export default function Address() {
     return (
         <div>
             <h1>Address</h1>
+            <Link to="/AddAddress">add address</Link>
             <table border="1">
                 <tr>
                     <th>address id</th>
@@ -32,7 +34,7 @@ export default function Address() {
                     addressList.map((a) => (
                         <tr key={a.addressId}>
                             <td>{a.addressId}</td>
-                            <td>{a.address}</td>
+                            <td><Link to={`/AddressOne/${a.addressId}`}>{a.address}</Link></td>
                         </tr>
                     ))
                 }

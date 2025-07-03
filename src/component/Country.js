@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { Link } from "react-router-dom";
 
 export default function Country() {
     // const countryList = [];
@@ -19,6 +20,7 @@ export default function Country() {
     return (
         <div>
             <h1>Country (currnetPage: {pageNumber})</h1>
+            <Link to="/AddCountry">add country</Link>
             <table border="1">
                 <tr>
                     <th>country id</th>
@@ -28,7 +30,8 @@ export default function Country() {
                     countryList.map((c) => (
                         <tr key={c.countryId}>
                             <td>{c.countryId}</td>
-                            <td>{c.country}</td>
+                            <td><Link to={`/CountryOne/${c.countryId}`}>{c.country}</Link></td>
+                            {/* <td><Link to={"/CountryOne/"+c.countryId}>{c.country}</Link></td> */}
                         </tr>
                     ))
                 }
