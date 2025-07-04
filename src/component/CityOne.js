@@ -1,15 +1,32 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 export default function CityOne() {
-    const {cityId} = useParams();
+    const { cityId } = useParams();
     const [city, setCity] = useState({});
+    const navigate = useNavigate();
 
     useEffect(() => {
-        fetch("http://localhost/cityOne/"+cityId)
+        fetch(`http://localhost/cityOne/${cityId}`)
         .then((res) => {return res.json()})
         .then((data) => {setCity(data)});
     }, []);
+
+    function remove() {
+        if(window.confirm('삭제하시겠습니까?')) {
+            fetch(`http://localhost/city/${cityId}`, {method: 'DELETE'})
+            .then((res) => {
+                if(res.ok) {
+                    navigate('/City');
+                    alert('삭제 성공');
+                } else {
+                    alert('삭제 실패');
+                }
+            })
+        } else {
+            alert('삭제를 취소했습니다.');
+        }
+    }
 
     return (
         <div>
@@ -33,8 +50,8 @@ export default function CityOne() {
                     <td>{city.lastUpdate}</td>
                 </tr>
             </table>
-            <button>수정</button>
-            <button>삭제</button>
+            <button onClick={() => {navigate(`/EditCity/${cityId}`)}}>수정</button>
+            <button onClick={remove}>삭제</button>
         </div>
     )
 }

@@ -1,16 +1,33 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom"
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom'
 
 export default function CountryOne() {
-    const {countryId} = useParams();
+    const { countryId } = useParams();
     const [country, setCountry] = useState({});
     const navigate = useNavigate();
     
     useEffect(() => {
-        fetch("http://localhost/countryOne/"+countryId)
+        fetch(`http://localhost/countryOne/${countryId}`)
         .then((res) => {return res.json()})
         .then((data) => {setCountry(data)});
     }, []);
+
+    function remove() {
+        if(window.confirm('삭제하시겠습니까?')) {
+            // window.alert('삭제 API 통신');
+            fetch(`http://localhost/country/${countryId}`, {method: 'DELETE'})
+            .then((res) => {
+                if(res.ok) {  // ex) http code 200
+                    navigate('/Country');
+                    window.alert('삭제 성공');  // window 생략 가능
+                } else {  // ex) http code 500
+                    window.alert('삭제 실패');
+                }
+            })
+        } else {
+            window.alert('삭제를 취소했습니다.');
+        }
+    }
 
     return (
         <div>
@@ -31,9 +48,10 @@ export default function CountryOne() {
                     <td>{country.lastUpdate}</td>
                 </tr>
             </table>
-            <button onClick={() => navigate(`/addCity/${countryId}`)}>add city</button>
-            <button>수정</button>
-            <button>삭제</button>
+            <button onClick={() => {navigate(`/addCity/${countryId}`)}}>add city</button>
+            {/* <Link to="/EditCountry">수정</Link> */}
+            <button onClick={() => {navigate(`/EditCountry/${countryId}`)}}>수정</button>
+            <button onClick={remove}>삭제</button>
         </div>
     )
  }
